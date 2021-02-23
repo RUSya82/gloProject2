@@ -5,19 +5,23 @@ document.addEventListener('DOMContentLoaded', () => {
     const toNY = document.querySelector('.to-ny');
 
     const daysOfWeek = ["Воскресенье", "Понедельник", "Вторник", "Среда", "Четверг", "Пятница", "Суббота"];
-
-    let date = new Date();
-    let partOfDay = getPartOfDay(date);
-    let dayOfWeek = daysOfWeek[date.getDay()];
-    let timeString = `${addZero(date.getHours())}:${addZero(date.getMinutes())}:${addZero(date.getSeconds())}
+    const timerFunc = () => {
+        let date = new Date();
+        let partOfDay = getPartOfDay(date);
+        let dayOfWeek = daysOfWeek[date.getDay()];
+        let timeString = `${addZero(date.getHours())}:${addZero(date.getMinutes())}:${addZero(date.getSeconds())}
      ${date.getHours() >= 12 ? 'PM' : 'AM'}`;
 
-    let NY = new Date(date.getFullYear() + 1, 0, 1);
-    let daysToNY = Math.floor((NY - date)/1000/60/60/24);
-    dayPart.textContent = partOfDay;
-    dayWeek.textContent = dayOfWeek;
-    time.textContent = timeString;
-    toNY.textContent = daysToNY;
+        let NY = new Date(date.getFullYear() + 1, 0, 1);
+        let daysToNY = Math.floor((NY - date)/1000/60/60/24);
+        dayPart.textContent = partOfDay;
+        dayWeek.textContent = dayOfWeek;
+        time.textContent = timeString;
+        toNY.textContent = daysToNY;
+    };
+    timerFunc();
+    setInterval(timerFunc, 1000);
+
 
 
 
