@@ -37,14 +37,13 @@ document.addEventListener('DOMContentLoaded', () => {
         return +number < 10 ? ('0' + number) : number;
     }
 
-    countTimer('28 Feb 2021');
+    //countTimer('28 Feb 2021');
 
     const toggleMenu = () => {
         let menuBtn = document.querySelector('.menu');
         let closeBtn = document.querySelector('.close-btn');
         let menu = document.querySelector('menu');
         let menuItems = menu.querySelectorAll('ul>li');
-        console.log(menuItems);
         const menuHandler = () => {
             menu.classList.toggle('active-menu');
         };
@@ -76,21 +75,31 @@ document.addEventListener('DOMContentLoaded', () => {
         let popupShow = () => {
             let ID;
             if (document.documentElement.clientWidth > 768){
-                popupContent.style.top = '-100%';
+                popup.style.display = 'block';
+                popupContent.style.transform = `scale(0,0) translateX(-50px) rotate(-90deg)`;
+                let start = performance.now();
+                let duration = 120;
+                let progress = 0;
+                let popupAnimate = () => {
+                    let now = performance.now();
+                    progress = (now - start)/duration;
+                    let deg = 90 - 90 * progress;
+                    if(progress <= 1){
+                        if(progress > 1){
+                            progress = 1;
+                        }
+                        popupContent.style.transform = `scale(${progress}) translateX(-50px) rotate(-${deg}deg)`;
+                        ID = requestAnimationFrame(popupAnimate);
+                    } else {
+                        popupContent.style.transform = `scale(1, 1) translateX(-50px) rotate(0deg)`;
+                        cancelAnimationFrame(ID);
+                    }
+                };
                 popupAnimate();
             } else {
                 popup.style.display = 'block';
             }
-            function popupAnimate() {
-                ID = requestAnimationFrame(popupAnimate);
-                popup.style.display = 'block';
-                let currentTop = parseInt(getComputedStyle(popupContent).top);
-                if(currentTop < 10){
-                    popupContent.style.top = `${currentTop + 1}%`;
-                } else {
-                    cancelAnimationFrame(ID);
-                }
-            }
+
 
         };
     };
