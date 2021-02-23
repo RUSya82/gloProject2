@@ -37,7 +37,7 @@ document.addEventListener('DOMContentLoaded', () => {
         return +number < 10 ? ('0' + number) : number;
     }
 
-    countTimer('23 Feb 2021');
+    countTimer('28 Feb 2021');
 
 
 
