@@ -104,21 +104,26 @@ document.addEventListener('DOMContentLoaded', () => {
         };
     };
     togglePopup();
-
+    //добавление планых прокруток к элементам
     const addScrollToElements = () => {
-        const serviceBlock = document.querySelector('.service');
-        const serviceBlockAnchor = document.querySelector('a[href="#service-block"]');
-        const menu = document.querySelector('menu');
-        const menuItems = menu.querySelectorAll('ul>li');
+        const serviceBlock = document.querySelector('.service');//блок услуги
+        const serviceBlockAnchor = document.querySelector('a[href="#service-block"]');//ссылка на блок услуги
+        const menu = document.querySelector('menu');//меню
+        const menuItems = menu.querySelectorAll('ul>li');//пункты меню
+        /**
+         * Функция плавного скролла до элемента, чистая, работает как вверх, так и вниз (писал сам)))
+         * @param element - ссылка на элемент
+         * @param duration - продолжительность скролла в мс
+         */
         const scrollToElement = (element, duration) => {
-            let Id;
-            let start = performance.now();
-            let topPosition = element.getBoundingClientRect().top;
-            let currentDocumentPosition = document.documentElement.scrollTop;
-            let progress = 0;
+            let Id; //id анимации
+            let start = performance.now();  //время старта
+            let topPosition = element.getBoundingClientRect().top; //текущая позиция элемента
+            let currentDocumentPosition = document.documentElement.scrollTop;//текущая прокрутка документа
+            let progress = 0;           //прогресс анимации
             let animateScroll = () => {
-                let now = performance.now();
-                progress = (now - start)/duration;
+                let now = performance.now();    //текущее время
+                progress = (now - start)/duration;  //вычисляем прогресс
                 if(progress <= 1){
                     document.documentElement.scrollTop = currentDocumentPosition + topPosition*progress;
                     Id = requestAnimationFrame(animateScroll);
@@ -129,16 +134,18 @@ document.addEventListener('DOMContentLoaded', () => {
             };
             animateScroll();
         };
+        //добавляем скроллы на ссылку
         serviceBlockAnchor.addEventListener('click', (e) => {
             e.preventDefault();
             scrollToElement(serviceBlock, 200);
         });
+        //добавляем плавные скроллы на меню
         menuItems.forEach((element) => {
-            let anchor = element.querySelector('a');
             let targetElementName = element.querySelector('a').getAttribute('href').slice(1);
             let targetElement = document.getElementById(targetElementName);
 
-            element.addEventListener('click', () => {
+            element.addEventListener('click', (e) => {
+                e.preventDefault();
                 scrollToElement(targetElement, 200);
             });
         });
