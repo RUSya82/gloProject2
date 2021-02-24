@@ -37,13 +37,13 @@ document.addEventListener('DOMContentLoaded', () => {
         return +number < 10 ? ('0' + number) : number;
     }
 
-    //countTimer('28 Feb 2021');
+    countTimer('28 Feb 2021');
 
     const toggleMenu = () => {
-        let menuBtn = document.querySelector('.menu');
-        let closeBtn = document.querySelector('.close-btn');
-        let menu = document.querySelector('menu');
-        let menuItems = menu.querySelectorAll('ul>li');
+        const menuBtn = document.querySelector('.menu');
+        const closeBtn = document.querySelector('.close-btn');
+        const menu = document.querySelector('menu');
+        const menuItems = menu.querySelectorAll('ul>li');
         const menuHandler = () => {
             menu.classList.toggle('active-menu');
         };
@@ -104,6 +104,52 @@ document.addEventListener('DOMContentLoaded', () => {
         };
     };
     togglePopup();
+
+    const addScrollToElements = () => {
+        const serviceBlock = document.querySelector('.service');
+        const serviceBlockAnchor = document.querySelector('a[href="#service-block"]');
+        const menu = document.querySelector('menu');
+        const menuItems = menu.querySelectorAll('ul>li');
+        const scrollToElement = (element, duration) => {
+            let Id;
+            let start = performance.now();
+            let topPosition = element.getBoundingClientRect().top;
+            let currentDocumentPosition = document.documentElement.scrollTop;
+            let progress = 0;
+            let animateScroll = () => {
+                let now = performance.now();
+                progress = (now - start)/duration;
+                if(progress <= 1){
+                    document.documentElement.scrollTop = currentDocumentPosition + topPosition*progress;
+                    Id = requestAnimationFrame(animateScroll);
+                } else {
+                    document.documentElement.scrollTop= currentDocumentPosition + topPosition;
+                    cancelAnimationFrame(Id);
+                }
+            };
+            animateScroll();
+        };
+        serviceBlockAnchor.addEventListener('click', (e) => {
+            e.preventDefault();
+            scrollToElement(serviceBlock, 200);
+        });
+        menuItems.forEach((element) => {
+            let anchor = element.querySelector('a');
+            let targetElementName = element.querySelector('a').getAttribute('href').slice(1);
+            let targetElement = document.getElementById(targetElementName);
+
+            element.addEventListener('click', () => {
+                scrollToElement(targetElement, 200);
+            });
+        });
+    };
+    addScrollToElements();
+
+
+
+
+
+
 
 
 
