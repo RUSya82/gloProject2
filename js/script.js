@@ -68,25 +68,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const menuHandler = () => {
             menu.classList.toggle('active-menu');
         };
-        //вешаем события клика по меню
-        menu.addEventListener('click', (e) => {
-            let target = e.target;
-            //если нажали по кнопке закрыть
-            if (target.classList.contains('close-btn')) {
-                menuHandler();
-            }
-            //если кликнули по пункту меню
-            let li = target.closest('li');
-            //если li есть в машем массиве
-            if (menuItemsArr.indexOf(li) !== -1) {
-                e.preventDefault();
-                let targetElementName = li.querySelector('a').getAttribute('href').slice(1);
-                let targetElement = document.getElementById(targetElementName);
-                scrollToElement(targetElement, 200);
-                menuHandler();
-            }
-
-        });
         //клики по документу
         document.body.addEventListener('click', (e) => {
             let target = e.target;
@@ -97,6 +78,19 @@ document.addEventListener('DOMContentLoaded', () => {
             //если нажали по кнопке меню
             if (target.closest('.menu')) {
                 menuHandler();
+            }
+            if (target.classList.contains('close-btn')) {
+                menuHandler();
+            }
+            let li = target.closest('li');
+            //если li есть в машем массиве
+            if (menuItemsArr.indexOf(li) !== -1) {
+                e.preventDefault();
+                //берем название целевого элемента
+                let targetElementName = li.querySelector('a').getAttribute('href').slice(1);
+                let targetElement = document.getElementById(targetElementName);
+                scrollToElement(targetElement, 200);//плавный скролл до него
+                menuHandler();//закрываем меню
             }
         });
     };
