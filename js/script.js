@@ -297,5 +297,94 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     slider(3000);
+    /**
+     * Замена фотографии в разделе "Наша команда" при наведении мыши
+     */
+    const changePhoto = () => {
+        let photos = document.querySelectorAll('.command__photo');
+        const togglePhoto = (event) => {
+            let elem = event.target;
+            let oldPhoto = elem.src;
+            elem.src = elem.dataset.img;
+            elem.dataset.img = oldPhoto;
+        };
+        photos.forEach((item) => {
+            item.addEventListener('mouseenter', togglePhoto);
+        });
+        photos.forEach((item) => {
+            item.addEventListener('mouseleave', togglePhoto);
+        });
+    };
+    changePhoto();
+    /**
+     * валидируем калькулятор, можно ввести только цифры
+     */
+    const validCalculator = () => {
+        const calcNum = document.querySelectorAll('.calc-square, .calc-count, .calc-day');
+        calcNum.forEach((item) => {
+            item.addEventListener('blur', (e) => {
+                let target = e.target;
+                target.value = target.value.replace(/\D+/g, '');
+            });
+        });
+    };
+    validCalculator();
+    /**
+     * Валидация формы для каждого поля после потери фокуса
+     */
+    const validFeedbackForm = () => {
+        const formName = document.querySelectorAll('#form2-name, .form-name');
+        const form2Message = document.getElementById('form2-message');
+        const formEmail = document.querySelectorAll('.form-email');
+        const formPhone = document.querySelectorAll('.form-phone');
+        /**
+         * преобразует строку: много пробелов и дефисов в один,
+         * пробелы и дефисы в начале и в конце обрезаются
+         * @param val
+         * @returns {*}
+         */
+        const customTrim = (val) => {
+            val = val.replace(/\s+/g, ' ');//много пробелов в один
+            val = val.replace(/-+/g, '-');//много дефисов в один
+            val = val.replace(/^[ |\-+]/g, '');//удаляем пробелы в начале
+            val = val.replace(/[ |\-+]$/g, '');//удаляем пробелы в конце
+            return val;
+        };
+        formName.forEach((item) => {
+            item.addEventListener('blur', (e) => {
+                let val = e.target.value;
+                val = val.replace(/[^а-яё^ \-]/ig, '');//только кириллица, дефис и пробел
+                val = customTrim(val);
+                val = val.replace(/( |^)[ а-яё]/g, (u) => u.toUpperCase());//capitalize
+                e.target.value = val;
+            });
+        });
 
+        form2Message.addEventListener('blur', (e) => {
+            let target = e.target;
+            let val = target.value;
+            val = val.replace(/[^а-яё^ \-]/ig, '');//только кириллица, дефис и пробел
+            val = customTrim(val);
+            target.value = val;
+        });
+        formEmail.forEach((item) => {
+            item.addEventListener('blur', (e) => {
+                let target = e.target;
+                let val = target.value;
+                val = val.replace(/[^a-z@\-!*~'_.]/ig, '');
+                val = customTrim(val);
+                target.value = val;
+            });
+        });
+        formPhone.forEach((item) => {
+            item.addEventListener('blur', (e) => {
+                let target = e.target;
+                let val = target.value;
+                val = val.replace(/[^\d()\-]/ig, '');//только цифры, тире и скобки
+                val = customTrim(val);
+                target.value = val;
+            });
+        });
+    };
+    validFeedbackForm();
 });
