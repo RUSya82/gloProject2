@@ -397,12 +397,50 @@ document.addEventListener('DOMContentLoaded', () => {
         const calcDay = document.querySelector('.calc-day');
         const totalBlock = document.getElementById('total');
 
+
+
         const calcSum = () => {
             let total = 0,
                 countValue = 1,
                 dayValue = 1;
             const typeValue = calcType.options[calcType.selectedIndex].value;
             const squareValue = +calcSquare.value;
+            let oldTotal = +totalBlock.textContent;
+            let delta = 0;
+            let id = 0;
+            let currentTotal = oldTotal;
+            /**
+             * Плавное изменение суммы на калькуляторе
+             */
+            const changeSum = () => {
+                id = requestAnimationFrame(changeSum);
+                if(oldTotal === total){
+                    cancelAnimationFrame(id);
+                    currentTotal = 0;
+                    return;
+                }
+                if(oldTotal < total){
+                    currentTotal += delta;
+                    if(currentTotal > total){
+                        currentTotal = total;
+                        cancelAnimationFrame(id);
+                        totalBlock.textContent = Math.floor(currentTotal);
+                        currentTotal = 0;
+                        return;
+                    }
+                } else if(oldTotal > total){
+                    currentTotal -= delta;
+                    if(currentTotal < total){
+                        currentTotal = total;
+                        cancelAnimationFrame(id);
+                        totalBlock.textContent = Math.floor(currentTotal);
+                        currentTotal = 0;
+                        return;
+                    }
+                }
+                totalBlock.textContent = Math.floor(currentTotal);
+            };
+
 
             if(calcCount.value > 1){
                 countValue += (calcCount.value - 1)/10;
@@ -414,8 +452,12 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             if(typeValue && squareValue){
                 total  =  price * countValue * dayValue * typeValue * squareValue;
+                delta = Math.abs(total - oldTotal)/20;
+                changeSum();
             }
-            totalBlock.innerHTML = Math.floor(total);
+
+
+
         };
 
         calcBlock.addEventListener('change', (e) => {
