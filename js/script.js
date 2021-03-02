@@ -388,4 +388,9 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     };
     validFeedbackForm();
+
+    const calc = () => {
+
+    };
+
 });
