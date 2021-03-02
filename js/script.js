@@ -363,7 +363,7 @@ document.addEventListener('DOMContentLoaded', () => {
         form2Message.addEventListener('blur', (e) => {
             let target = e.target;
             let val = target.value;
-            val = val.replace(/[^а-яё^ \-]/ig, '');//только кириллица, дефис и пробел
+            val = val.replace(/[^а-яё.,:;^ \-]/ig, '');//только кириллица, дефис и пробел
             val = customTrim(val);
             target.value = val;
         });
@@ -371,6 +371,7 @@ document.addEventListener('DOMContentLoaded', () => {
             item.addEventListener('blur', (e) => {
                 let target = e.target;
                 let val = target.value;
+                //val = val.replace(/[^_@.!~*'a-zA-Z\-]/g, '');
                 val = val.replace(/[^a-z@\-!*~'_.]/ig, '');
                 val = customTrim(val);
                 target.value = val;
