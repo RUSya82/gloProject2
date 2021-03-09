@@ -419,22 +419,22 @@
 <script src="plugins/validator/validator.js"></script>
 <script src="js/script.js"></script>
 <script>
-	// let val = new Validator('form1', [
-	// 	{
-	// 		selector: 'form1-name',
-	// 		pattern: /\S+/gi
-	// 	},
-	// 	{
-	// 		selector: 'form1-email',
-	// 		method: 'email'
-	// 	},
-	// 	{
-	// 		selector: 'form1-phone',
-	// 		method: 'phone'
-	// 	}
-	// ]);
-	//console.log(val);
-	// val.init();
+	let val = new Validator('form1', [
+		{
+			selector: 'form1-name',
+			pattern: /\S+/gi
+		},
+		{
+			selector: 'form1-email',
+			method: 'email'
+		},
+		{
+			selector: 'form1-phone',
+			method: 'phone'
+		}
+	]);
+	console.log(val);
+	val.init();
 </script>
 </body>
 </html>
