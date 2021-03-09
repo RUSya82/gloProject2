@@ -337,6 +337,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const form2Message = document.getElementById('form2-message');
         const formEmail = document.querySelectorAll('.form-email');
         const formPhone = document.querySelectorAll('.form-phone');
+        const form2 = document.getElementById('form2');
+        form2.addEventListener('blur', (e) => console.log(e.target), true );
         /**
          * преобразует строку: много пробелов и дефисов в один,
          * пробелы и дефисы в начале и в конце обрезаются
@@ -387,7 +389,7 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         });
     };
-    validFeedbackForm();
+    //validFeedbackForm();
 
     const calc = (price = 100) => {
         const calcBlock = document.querySelector('.calc-block');
