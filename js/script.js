@@ -389,7 +389,7 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         });
     };
-    //validFeedbackForm();
+    validFeedbackForm();
 
     const calc = (price = 100) => {
         const calcBlock = document.querySelector('.calc-block');
@@ -470,4 +470,40 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     };
     calc(100);
+
+    const sendForm = () => {
+        const errorMessage = "Что то пошло не так!";
+        const loadMessage = "Загрузка!";
+        const successMessage = "Спасибо! Мы скоро с Вами свяжемся!";
+
+        const form = document.getElementById('form1');
+        const statusMessage = document.createElement('div');
+        statusMessage.style.cssText = 'font-size: 2rem;';
+
+        form.addEventListener('submit', (event) => {
+           event.preventDefault();
+           form.appendChild(statusMessage);
+           const request = new XMLHttpRequest();
+           request.addEventListener('readystatechange', (e) => {
+               statusMessage.textContent = loadMessage;
+               if(request.readyState !== 4){
+                   return;
+               }
+               if(request.status === 200){
+                   statusMessage.textContent = successMessage;
+               } else {
+                   statusMessage.textContent = errorMessage;
+               }
+           });
+           request.open('POST', './server.php');
+           request.setRequestHeader('Content-Type', 'application/json');
+           const formData = new FormData(form);
+           let body = {};
+           formData.forEach((item, index) => {
+               body[index] = item;
+           });
+           request.send(JSON.stringify(body));
+        });
+    };
+    sendForm();
 });
